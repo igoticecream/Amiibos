@@ -6,6 +6,7 @@ import struct
 import json
 import random
 import datetime
+import re
 import requests
 import imutils
 import cv2
@@ -31,6 +32,12 @@ def image_resize(image, width):
         return img
 
     return image
+
+
+def normalize(name):
+    name = unidecode.unidecode(name)
+    name = re.sub(r'\.', '', name)
+    return name
 
 
 def get_amiibos():
@@ -59,7 +66,8 @@ def main():
 
     for amiibo in amiibos:
         amiibo_id = amiibo['head'] + amiibo['tail']
-        amiibo_name = unidecode.unidecode(amiibo['name'])
+        amiibo_name = normalize(amiibo['name'])
+        amiibo_series = normalize(amiibo['amiiboSeries'])
         amiibo_data = {
             'name': amiibo_name,
             'write_counter': 0,
@@ -97,16 +105,17 @@ def main():
         }
 
         if len(get_amiibo_duplicates(amiibos, amiibo)) > 0:
-            filename = f'amiibo/{amiibo["amiiboSeries"]}/{amiibo_name} ({amiibo["release"]["jp"]})'
+            filename = f'amiibo/{amiibo_series}/{amiibo_name} ({amiibo["release"]["jp"]})'
         else:
-            filename = f'amiibo/{amiibo["amiiboSeries"]}/{amiibo_name}'
+            filename = f'amiibo/{amiibo_series}/{amiibo_name}'
 
         path = Path(filename)
         path.mkdir(parents=True, exist_ok=True)
 
         # Json
         with Path(path / 'amiibo.json').open('w', encoding='UTF-8') as output:
-            json.dump(amiibo_data, output, sort_keys=False, ensure_ascii=False, indent=2)
+            json.dump(amiibo_data, output, sort_keys=False,
+                      ensure_ascii=False, indent=2)
 
         # Flag
         Path(path / 'amiibo.flag').touch()

@@ -1,7 +1,11 @@
-all:
-	@python3 amiibo.py
-	@mkdir "amiibo/Legend Of Zelda/Midna & Wolf Link/areas"
-	@cp areas/0x1019C800.bin "amiibo/Legend Of Zelda/Midna & Wolf Link/areas"
+IMAGE_NAME="amiibo"
+CONTAINER_NAME="amiibo-container"
+
+all: build
+	@docker run -it --rm --volume "${CURDIR}/data:/app/data" --name ${CONTAINER_NAME} ${IMAGE_NAME}
+
+build:
+	@docker build --rm --tag ${IMAGE_NAME} .
 
 count:
-	@find amiibo -type f -name amiibo.json | wc -l
+	@find data -type f -name amiibo.json | wc -l

@@ -2,6 +2,8 @@
 
 from pathlib import Path
 
+import shutil
+import os
 import struct
 import json
 import random
@@ -60,11 +62,26 @@ def get_amiibo_duplicates(amiibos, amiibo):
     return duplicates
 
 
+def move_areas():
+    # Set paths
+    source_path = "areas/0x1019C800.bin"
+    destination_path = "data/Legend Of Zelda/Midna & Wolf Link/areas"
+
+    # Create destination directory if it doesn't exist
+    if not os.path.exists(destination_path):
+        os.makedirs(destination_path)
+
+    # Copy file to destination directory
+    shutil.copy(source_path, destination_path)
+
+
 def main():
     date = datetime.datetime.today()
     amiibos = get_amiibos()
 
-    for amiibo in amiibos:
+    move_areas()
+
+    for index, amiibo in enumerate(amiibos):
         amiibo_id = amiibo['head'] + amiibo['tail']
         amiibo_name = normalize(amiibo['name'])
         amiibo_series = normalize(amiibo['amiiboSeries'])
@@ -104,10 +121,12 @@ def main():
             ]
         }
 
+        print(f"Creating {amiibo_name} ({index+1}/{len(amiibos)})")
+
         if len(get_amiibo_duplicates(amiibos, amiibo)) > 0:
-            filename = f'amiibo/{amiibo_series}/{amiibo_name} ({amiibo["release"]["jp"]})'
+            filename = f'data/{amiibo_series}/{amiibo_name} ({amiibo["release"]["jp"]})'
         else:
-            filename = f'amiibo/{amiibo_series}/{amiibo_name}'
+            filename = f'data/{amiibo_series}/{amiibo_name}'
 
         path = Path(filename)
         path.mkdir(parents=True, exist_ok=True)

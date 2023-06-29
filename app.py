@@ -16,6 +16,11 @@ import numpy
 import unidecode
 
 
+def get_random_value(seed, salt):
+    random.seed(swap16(int(seed[0:4], base=16)) + int(seed[4:6], base=16) + int(seed[6:8], base=16) + int(seed[12:14], base=16) + int(seed[8:12], base=16) + salt)
+    return random.randint(0, 255)
+
+
 def swap32(i):
     return struct.unpack('<I', struct.pack('>I', i))[0]
 
@@ -108,13 +113,13 @@ def main():
                 'model_number': int(amiibo_id[8:12], base=16)
             },
             "uuid": [
-                random.randint(0, 255),
-                random.randint(0, 255),
-                random.randint(0, 255),
-                random.randint(0, 255),
-                random.randint(0, 255),
-                random.randint(0, 255),
-                random.randint(0, 255),
+                get_random_value(amiibo_id, 0),
+                get_random_value(amiibo_id, 1),
+                get_random_value(amiibo_id, 2),
+                get_random_value(amiibo_id, 3),
+                get_random_value(amiibo_id, 4),
+                get_random_value(amiibo_id, 5),
+                get_random_value(amiibo_id, 6),
                 0,
                 0,
                 0

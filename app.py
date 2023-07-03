@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 
 from pathlib import Path
+from dirsync import sync
 
 import shutil
 import os
@@ -47,6 +48,10 @@ def normalize(name):
     return name
 
 
+def move_unreleased():
+    sync('unreleased', 'data', 'sync', logger=None)
+
+
 def get_amiibos():
     url = 'https://www.amiiboapi.com/api/amiibo'
     headers = {'Content-Type': 'application/json'}
@@ -85,6 +90,7 @@ def main():
     amiibos = get_amiibos()
 
     move_areas()
+    move_unreleased()
 
     for index, amiibo in enumerate(amiibos):
         amiibo_id = amiibo['head'] + amiibo['tail']

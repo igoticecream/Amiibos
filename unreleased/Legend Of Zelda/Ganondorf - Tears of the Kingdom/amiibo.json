@@ -1,0 +1,35 @@
+{
+  "name": "Ganondorf - Tears of the Kingdom",
+  "write_counter": 0,
+  "version": 0,
+  "mii_charinfo_file": "mii-charinfo.bin",
+  "first_write_date": {
+    "y": 2023,
+    "m": 5,
+    "d": 29
+  },
+  "last_write_date": {
+    "y": 2023,
+    "m": 5,
+    "d": 29
+  },
+  "id": {
+    "game_character_id": 1,
+    "character_variant": 0,
+    "figure_type": 0,
+    "series": 9,
+    "model_number": 1050
+  },
+  "uuid": [
+    183,
+    72,
+    139,
+    226,
+    88,
+    17,
+    201,
+    0,
+    0,
+    0
+  ]
+}

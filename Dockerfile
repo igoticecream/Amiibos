@@ -13,6 +13,7 @@ ENV PYTHONPATH=/app
 COPY areas            /app/areas
 COPY requirements.txt /app
 COPY app.py           /app
+COPY unreleased       /app/unreleased
 
 # Install required packages
 RUN pip install --upgrade pip && \
